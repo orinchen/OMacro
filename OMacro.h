@@ -1,6 +1,8 @@
 
 #pragma mark 其他
 
+#define APPLICATION(className) ((className*) ([UIApplication sharedApplication]))
+
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
 #define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height
