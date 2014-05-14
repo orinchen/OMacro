@@ -1,4 +1,5 @@
-#ifdef __OBJC__
+
+#pragma mark 其他
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
