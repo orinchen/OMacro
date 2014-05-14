@@ -1,3 +1,10 @@
+//
+//  OMacro.h
+//
+//  Created by Orin Chen on 14-5-9.
+//  Copyright (c) 2014 orinchen. All rights reserved.
+//
+
 
 #pragma mark 其他
 
@@ -54,6 +61,8 @@ return shared##className; \
 
 #pragma mark LOG相关
 
+#ifdef DEBUG
+
 #ifdef DDLogError
 #define DLogError(frmt, ...) DDLogError((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
@@ -84,26 +93,12 @@ return shared##className; \
 #define DLogVerbose(frmt, ...) NSLog((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #endif
 
+#else
 
+#define DLogError(frmt, ...)
+#define DLogWarn(frmt, ...)
+#define DLogInfo(frmt, ...)
+#define DLogVerbose(frmt, ...)
+#define DLogDebug(frmt, ...)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif
