@@ -5,7 +5,6 @@
 //  Copyright (c) 2014 orinchen. All rights reserved.
 //
 
-
 #pragma mark 其他
 
 #define APPLICATION(className) ((className*) ([UIApplication sharedApplication]))
@@ -14,11 +13,15 @@
 
 #define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height
 
-#define CURRENT_LANGUAGE ([[NSLocale preferredLanguages] objectAtIndex:0]) 
+#define CURRENT_LANGUAGE ([[NSLocale preferredLanguages] objectAtIndex:0])
 
-#define IS_RETINA ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
+#define IS_IPHONE4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 
 #define IS_IPHONE5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+
+#define IS_IPHONE6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size) : NO)
+
+#define IS_IPHONE6P ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) : NO)
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -52,7 +55,8 @@ return shared##className; \
 }
 
 #pragma mark 颜色宏
-#define BGIMAGE(imageName) [UIColor colorWithPatternImage:[UIImage imageNamed:(imageName)]];
+
+#define BGIMAGE(imageName) [UIColor colorWithPatternImage:[UIImage imageNamed:(imageName)]]
 
 // 获取RGB颜色
 #define RGBA(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
@@ -61,35 +65,23 @@ return shared##className; \
 
 #pragma mark LOG相关
 
+#ifndef DD_LEGACY_MACROS
+#define DD_LEGACY_MACROS 0
+#endif
+
 #ifdef DEBUG
 
-#ifdef DDLogError
-#define DLogError(frmt, ...) DDLogError((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#ifdef DD_LEGACY_MACROS
+#define DLogError(frmt, ...) DDLogError((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt "\n"), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define DLogWarn(frmt, ...) DDLogWarn((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt "\n"), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define DLogInfo(frmt, ...) DDLogInfo((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt "\n"), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define DLogDebug(frmt, ...) DDLogDebug((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt "\n"), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define DLogVerbose(frmt, ...) DDLogVerbose((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt "\n"), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define DLogError(frmt, ...) NSLog((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#endif
-
-#ifdef DDLogWarn
-#define DLogWarn(frmt, ...) DDLogWarn((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#else
 #define DLogWarn(frmt, ...) NSLog((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#endif
-
-#ifdef DDLogInfo
-#define DLogInfo(frmt, ...) DDLogInfo((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#else
 #define DLogInfo(frmt, ...) NSLog((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#endif
-
-#ifdef DDLogDebug
-#define DLogDebug(frmt, ...) DDLogDebug((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#else
 #define DLogDebug(frmt, ...) NSLog((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#endif
-
-#ifdef DDLogVerbose
-#define DLogVerbose(frmt, ...) DDLogVerbose((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#else
 #define DLogVerbose(frmt, ...) NSLog((@"\n[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" frmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #endif
 
@@ -102,3 +94,5 @@ return shared##className; \
 #define DLogDebug(frmt, ...)
 
 #endif
+
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
